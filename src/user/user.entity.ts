@@ -1,16 +1,17 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { User } from './interfaces/user.interface';
 
 @Entity()
-export class User {
+export class UserEntity implements User {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
-  firstName: string;
+  name: string;
 
   @Column()
-  lastName: string;
+  nickName: string;
 
-  @Column({ default: true })
-  isActive: boolean;
+  @Column()
+  email: string;
 }
