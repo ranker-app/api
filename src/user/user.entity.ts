@@ -1,9 +1,10 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 import { User } from './interfaces/user.interface';
-import { Auditable } from '../base/audit.entity';
+import { AuditableEntity } from '../base/audit.entity';
+import { UserStatus } from './enums/user-status.enum';
 
 @Entity('user')
-export class UserEntity extends Auditable implements User {
+export class UserEntity extends AuditableEntity implements User {
   @PrimaryGeneratedColumn({ name: 'id' })
   id: number;
 
@@ -15,4 +16,12 @@ export class UserEntity extends Auditable implements User {
 
   @Column({ name: 'email' })
   email: string;
+
+  @Column({
+    name: 'status',
+    type: 'enum',
+    enum: UserStatus,
+    default: UserStatus.ACTIVE,
+  })
+  status: UserStatus;
 }

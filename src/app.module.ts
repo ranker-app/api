@@ -3,6 +3,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
 import { AppDataSource } from './config/typeorm.config';
+import { CategoryModule } from './category/category.module';
 
 @Module({
   imports: [
@@ -10,7 +11,7 @@ import { AppDataSource } from './config/typeorm.config';
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule], // Import ConfigModule to use ConfigService
       useFactory: () => ({
-        autoLoadEntities: true, // Auto-load entities from forFeature()
+        autoLoadEntities: true,
       }),
       inject: [ConfigService], // Inject ConfigService into useFactory and dataSourceFactory
       dataSourceFactory: async () => {
@@ -32,6 +33,7 @@ import { AppDataSource } from './config/typeorm.config';
       },
     }),
     UserModule,
+    CategoryModule,
   ],
 })
 export class AppModule {}

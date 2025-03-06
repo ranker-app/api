@@ -2,7 +2,7 @@ import { DataSource } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
 import * as dotenv from 'dotenv';
 
-dotenv.config(); // Load .env file
+dotenv.config();
 
 const configService = new ConfigService();
 
@@ -13,8 +13,9 @@ export const AppDataSource = new DataSource({
   username: configService.get<string>('MYSQL_USER'),
   password: configService.get<string>('MYSQL_PASSWORD'),
   database: configService.get<string>('MYSQL_DATABASE'),
-  migrationsTableName: 'custom_migrations_table',
+  migrationsTableName: 'MIGRATIONS_CHANGELOG',
   migrations: [__dirname + '/../migrations/*{.ts,.js}'],
+  entities: [__dirname + '/../**/*.entity{.ts,.js}'], // Use glob pattern to load entities
   synchronize: false,
   logging: ['migration', 'error'],
 });
