@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { CategoryEntity } from './category.entity';
 import { Category } from './interfaces/category.interface';
@@ -13,12 +13,25 @@ export class CategoryService {
   ) {}
 
   async findAll(): Promise<Category[]> {
-    return this.categorysRepository.find();
+    return this.categorysRepository.find({
+      order: {
+        id: 'DESC',
+      },
+    });
   }
 
   async create(createCategoryDto: CreateCategoryDto): Promise<Category> {
     const newCategory: Category =
       this.categorysRepository.create(createCategoryDto);
+
+    const existingCategory = await this.findBySlug(createCategoryDto.slug);
+
+    if (existingCategory) {
+      throw new HttpException(
+        'A category with this slug already exists',
+        HttpStatus.NOT_ACCEPTABLE,
+      );
+    }
 
     return this.categorysRepository.save(newCategory);
   }
@@ -29,6 +42,18 @@ export class CategoryService {
     if (!category) {
       throw new HttpException('Category not found', HttpStatus.NOT_FOUND);
     }
+
+    return category;
+  }
+
+  async findBySlug(slug: string): Promise<Category> {
+    const category = await this.categorysRepository.findOneBy({ slug });
+
+    return category;
+  }
+
+  async findByIds(ids: number[]): Promise<Category[]> {
+    const category = await this.categorysRepository.findBy({ id: In(ids) });
 
     return category;
   }

@@ -1,6 +1,14 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToMany,
+  JoinTable,
+} from 'typeorm';
 import { Category } from './interfaces/category.interface';
 import { AuditableEntity } from '../base/audit.entity';
+import { PollEntity } from 'src/poll/poll.entity';
+import { Poll } from 'src/poll/interfaces/poll.interface';
 
 @Entity('category')
 export class CategoryEntity extends AuditableEntity implements Category {
@@ -12,4 +20,12 @@ export class CategoryEntity extends AuditableEntity implements Category {
 
   @Column({ name: 'slug' })
   slug: string;
+
+  @ManyToMany(() => PollEntity)
+  @JoinTable({
+    name: 'poll_category',
+    joinColumn: { name: 'category_id', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'poll_id', referencedColumnName: 'id' },
+  })
+  categories: PollEntity[];
 }

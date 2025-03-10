@@ -1,8 +1,9 @@
-import { Auditable } from 'src/base/audit.interface';
-import { Poll } from '../interfaces/poll.interface';
+import { CreatePollCategoryDto } from './create-poll-category.dto';
 
-export class CreatePollDto implements Omit<Poll, keyof Auditable> {
+export class CreatePollDto {
   image: string;
   content: string;
   slug: string;
+  userId: number;
+  categories: CreatePollCategoryDto[];
 }

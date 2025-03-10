@@ -1,4 +1,5 @@
 import { Auditable } from 'src/base/audit.interface';
+import { Category } from 'src/category/interfaces/category.interface';
 import { User } from 'src/user/interfaces/user.interface';
 
 export interface Poll extends Auditable {
@@ -6,7 +7,7 @@ export interface Poll extends Auditable {
   content: string;
   slug: string;
   user?: User;
-  // categories: Category[];
+  categories: Category[];
   // options: PollOption[];
   // comments: PollComment[];
 }
