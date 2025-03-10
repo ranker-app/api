@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { AuthenticatedUserController } from './authenticateduser.controller';
 import { AuthenticatedUserService } from './authenticateduser.service';
-import { UserModule } from 'src/user/user.module';
+import { UserModule } from '../user/user.module';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from '../auth/constants';
-import { AuthModule } from 'src/auth/auth.module';
+import { AuthModule } from '../auth/auth.module';
 
 @Module({
   controllers: [AuthenticatedUserController],

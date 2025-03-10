@@ -7,8 +7,8 @@ import {
 } from 'typeorm';
 import { Category } from './interfaces/category.interface';
 import { AuditableEntity } from '../base/audit.entity';
-import { PollEntity } from 'src/poll/poll.entity';
-import { Poll } from 'src/poll/interfaces/poll.interface';
+import { PollEntity } from '../poll/poll.entity';
+import { Poll } from '../poll/interfaces/poll.interface';
 
 @Entity('category')
 export class CategoryEntity extends AuditableEntity implements Category {

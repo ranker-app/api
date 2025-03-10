@@ -1,7 +1,7 @@
 import { BeforeInsert, BeforeUpdate, Column } from 'typeorm';
 import { Auditable } from './audit.interface';
 
-export class AuditableEntity implements Auditable {
+export abstract class AuditableEntity implements Auditable {
   @Column({ name: 'create_user' })
   createUser: string;
 

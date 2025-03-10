@@ -1,12 +1,15 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CategoryService } from 'src/category/category.service';
+import { CategoryService } from '../category/category.service';
 import { Repository } from 'typeorm';
 import { UserService } from '../user/user.service';
 import { CreatePollCategoryDto } from './dto/create-poll-category.dto';
 import { CreatePollDto } from './dto/create-poll.dto';
 import { Poll } from './interfaces/poll.interface';
 import { PollEntity } from './poll.entity';
+import { CreatePollOptionDto } from './polloption/dto/create-poll-option.dto';
+import { PollOptionService } from './polloption/polloption.service';
+import { mergeObjects } from 'src/utils/objects';
 
 @Injectable()
 export class PollService {
@@ -15,6 +18,7 @@ export class PollService {
     private pollsRepository: Repository<PollEntity>,
     private readonly userService: UserService,
     private readonly categoryService: CategoryService,
+    private readonly pollOptionService: PollOptionService,
   ) {}
 
   async findAll(): Promise<Poll[]> {
@@ -34,13 +38,34 @@ export class PollService {
     poll.categories = await this.categoryService.findByIds(categoryIds);
   }
 
+  async setupPollOptions(poll: Poll, options: CreatePollOptionDto[]) {
+    options.forEach((o) => {
+      o.pollId = poll.id;
+    });
+
+    poll.options = await this.pollOptionService.bulkCreate(options);
+  }
+
+  async handlePollOptions(poll: Poll, options: CreatePollOptionDto[]) {
+    const existingOptions = poll.options || [];
+
+    poll.options = await this.pollOptionService.bulkOperate(
+      options,
+      existingOptions,
+      { pollId: poll.id },
+    );
+  }
+
   async create(createPollDto: CreatePollDto): Promise<Poll> {
     const newPoll: Poll = this.pollsRepository.create(createPollDto);
 
-    await this.setupUser(newPoll, createPollDto.userId);
-    await this.setupCategories(newPoll, createPollDto.categories);
+    const poll = await this.pollsRepository.save(newPoll);
 
-    return this.pollsRepository.save(newPoll);
+    await this.setupUser(poll, createPollDto.userId);
+    await this.setupCategories(poll, createPollDto.categories);
+    await this.setupPollOptions(poll, createPollDto.options);
+
+    return this.pollsRepository.save(poll);
   }
 
   async findOneOrThrow(id: number): Promise<Poll> {
@@ -56,7 +81,26 @@ export class PollService {
   async update(id: number, createPollDto: CreatePollDto): Promise<Poll> {
     const poll = await this.findOneOrThrow(id);
 
-    Object.assign(poll, createPollDto);
+    if (poll.user?.id !== createPollDto.userId) {
+      throw new HttpException(
+        'Poll does not belong to you',
+        HttpStatus.UNAUTHORIZED,
+      );
+    }
+
+    mergeObjects(poll, createPollDto, ['id', 'categories', 'options']);
+
+    await this.setupCategories(poll, createPollDto.categories);
+    await this.handlePollOptions(poll, createPollDto.options);
+
+    // poll.options.forEach((o) => {
+    //   o.poll = poll as PollEntity;
+    //   o.pollId = poll.id;
+    // });
+
+    // poll.options = [];
+
+    console.log('About to save poll - ', poll);
 
     return await this.pollsRepository.save(poll);
   }

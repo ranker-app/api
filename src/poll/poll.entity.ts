@@ -1,4 +1,4 @@
-import { CategoryEntity } from 'src/category/category.entity';
+import { CategoryEntity } from '../category/category.entity';
 import {
   Column,
   Entity,
@@ -6,11 +6,13 @@ import {
   JoinTable,
   ManyToMany,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { AuditableEntity } from '../base/audit.entity';
 import { UserEntity } from '../user/user.entity';
 import { Poll } from './interfaces/poll.interface';
+import { PollOptionEntity } from './polloption/polloption.entity';
 
 @Entity('poll')
 export class PollEntity extends AuditableEntity implements Poll {
@@ -42,6 +44,9 @@ export class PollEntity extends AuditableEntity implements Poll {
     inverseJoinColumn: { name: 'category_id', referencedColumnName: 'id' },
   })
   categories: CategoryEntity[];
+
+  @OneToMany(() => PollOptionEntity, (poll) => poll.poll, { eager: true })
+  options: PollOptionEntity[];
 
   // @Column({ name: 'image' })
   // categories: Category[];

@@ -11,7 +11,8 @@ import {
 } from '@nestjs/common';
 import { CreatePollDto } from './dto/create-poll.dto';
 import { PollService } from './poll.service';
-import { AuthGuard } from 'src/auth/auth.guard';
+import { AuthGuard } from '../auth/auth.guard';
+import { isInstance } from 'class-validator';
 
 @Controller('polls')
 export class PollController {
@@ -30,6 +31,8 @@ export class PollController {
   @UseGuards(AuthGuard)
   @Post()
   async create(@Request() req, @Body() createUserDto: CreatePollDto) {
+    console.log(`POST /polls with [${createUserDto.toString()}]`);
+
     createUserDto.userId = req.user.id;
     return this.pollService.create(createUserDto);
   }
@@ -41,6 +44,8 @@ export class PollController {
     @Request() req,
     @Body() createUserDto: CreatePollDto,
   ) {
+    console.log(`PUT /polls/${id} with [${createUserDto.toString()}]`);
+
     createUserDto.userId = req.user.id;
     return this.pollService.update(id, createUserDto);
   }

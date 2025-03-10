@@ -1,4 +1,4 @@
-import { Auditable } from 'src/base/audit.interface';
+import { Auditable } from '../../base/audit.interface';
 
 export interface User extends Auditable {
   name: string;
