@@ -23,9 +23,14 @@ export class PollController {
     return this.pollService.findAll();
   }
 
-  @Get(':id')
-  async findOne(@Param('id') id: number) {
-    return this.pollService.findOneOrThrow(id);
+  // @Get(':id')
+  // async findOne(@Param('id') id: number) {
+  //   return this.pollService.findOneOrThrow(id);
+  // }
+
+  @Get(':slug')
+  async findOne(@Param('slug') slug: string) {
+    return this.pollService.findBySlugOrThrow(slug);
   }
 
   @UseGuards(AuthGuard)

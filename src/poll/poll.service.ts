@@ -78,6 +78,16 @@ export class PollService {
     return poll;
   }
 
+  async findBySlugOrThrow(slug: string): Promise<Poll> {
+    const poll = await this.pollsRepository.findOneBy({ slug });
+
+    if (!poll) {
+      throw new HttpException('Poll not found', HttpStatus.NOT_FOUND);
+    }
+
+    return poll;
+  }
+
   async update(id: number, createPollDto: CreatePollDto): Promise<Poll> {
     const poll = await this.findOneOrThrow(id);
 
