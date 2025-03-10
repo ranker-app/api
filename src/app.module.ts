@@ -6,6 +6,7 @@ import { AppDataSource } from './config/typeorm.config';
 import { CategoryModule } from './category/category.module';
 import { PollModule } from './poll/poll.module';
 import { AuthModule } from './auth/auth.module';
+import { AuthenticatedUserModule } from './authenticateduser/authenticateduser.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { AuthModule } from './auth/auth.module';
     CategoryModule,
     PollModule,
     AuthModule,
+    AuthenticatedUserModule,
   ],
 })
 export class AppModule {}
