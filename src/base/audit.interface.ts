@@ -1,5 +1,5 @@
 export class Auditable {
-  id: number;
+  id?: number;
   createUser: string;
   createDt: Date;
   updateUser: string;

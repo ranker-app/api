@@ -1,7 +1,8 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { User } from './interfaces/user.interface';
 import { AuditableEntity } from '../base/audit.entity';
 import { UserStatus } from './enums/user-status.enum';
+import { PollEntity } from '../poll/poll.entity';
 
 @Entity('user')
 export class UserEntity extends AuditableEntity implements User {
@@ -17,6 +18,9 @@ export class UserEntity extends AuditableEntity implements User {
   @Column({ name: 'email' })
   email: string;
 
+  @Column({ name: 'password' })
+  password: string;
+
   @Column({
     name: 'status',
     type: 'enum',
@@ -24,4 +28,7 @@ export class UserEntity extends AuditableEntity implements User {
     default: UserStatus.ACTIVE,
   })
   status: UserStatus;
+
+  @OneToMany(() => PollEntity, (poll) => poll.user)
+  polls: PollEntity[];
 }

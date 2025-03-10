@@ -39,11 +39,9 @@ export class CategoryService {
   ): Promise<Category> {
     const foundCategory = await this.findOneOrThrow(id);
 
-    const newCategory = { ...foundCategory, ...createCategoryDto };
+    Object.assign(foundCategory, createCategoryDto);
 
-    await this.categorysRepository.update(id, newCategory);
-
-    return newCategory;
+    return await this.categorysRepository.save(foundCategory);
   }
 
   async delete(id: number): Promise<any> {

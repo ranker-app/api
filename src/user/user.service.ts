@@ -32,12 +32,20 @@ export class UserService {
     return user;
   }
 
+  async findByEmailOrThrow(email: string): Promise<User> {
+    const user = await this.usersRepository.findOneBy({ email });
+
+    if (!user) {
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+    }
+
+    return user;
+  }
+
   async update(id: number, createUserDto: CreateUserDto): Promise<User> {
     const user = await this.findOneOrThrow(id);
 
     Object.assign(user, createUserDto);
-
-    // const newUser = { ...user, ...createUserDto };
 
     return await this.usersRepository.save(user);
   }
