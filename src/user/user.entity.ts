@@ -3,6 +3,7 @@ import { User } from './interfaces/user.interface';
 import { AuditableEntity } from '../base/audit.entity';
 import { UserStatus } from './enums/user-status.enum';
 import { PollEntity } from '../poll/poll.entity';
+import { PollVoteEntity } from '../poll/pollvote/pollovote.entity';
 
 @Entity('user')
 export class UserEntity extends AuditableEntity implements User {
@@ -31,4 +32,7 @@ export class UserEntity extends AuditableEntity implements User {
 
   @OneToMany(() => PollEntity, (poll) => poll.user)
   polls: PollEntity[];
+
+  @OneToMany(() => PollVoteEntity, (poll) => poll.user)
+  votes: PollVoteEntity[];
 }

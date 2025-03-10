@@ -13,6 +13,7 @@ import { AuditableEntity } from '../base/audit.entity';
 import { UserEntity } from '../user/user.entity';
 import { Poll } from './interfaces/poll.interface';
 import { PollOptionEntity } from './polloption/polloption.entity';
+import { PollVoteEntity } from './pollvote/pollovote.entity';
 
 @Entity('poll')
 export class PollEntity extends AuditableEntity implements Poll {
@@ -47,6 +48,9 @@ export class PollEntity extends AuditableEntity implements Poll {
 
   @OneToMany(() => PollOptionEntity, (poll) => poll.poll, { eager: true })
   options: PollOptionEntity[];
+
+  @OneToMany(() => PollVoteEntity, (poll) => poll.poll)
+  votes: PollVoteEntity[];
 
   // @Column({ name: 'image' })
   // categories: Category[];

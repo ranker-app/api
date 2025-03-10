@@ -7,6 +7,7 @@ import { CategoryModule } from './category/category.module';
 import { PollModule } from './poll/poll.module';
 import { AuthModule } from './auth/auth.module';
 import { AuthenticatedUserModule } from './authenticateduser/authenticateduser.module';
+import { PollVoteModule } from './poll/pollvote/pollvote.module';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { AuthenticatedUserModule } from './authenticateduser/authenticateduser.m
     PollModule,
     AuthModule,
     AuthenticatedUserModule,
+    PollVoteModule,
   ],
 })
 export class AppModule {}
