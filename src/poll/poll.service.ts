@@ -9,7 +9,7 @@ import { Poll } from './interfaces/poll.interface';
 import { PollEntity } from './poll.entity';
 import { CreatePollOptionDto } from './polloption/dto/create-poll-option.dto';
 import { PollOptionService } from './polloption/polloption.service';
-import { mergeObjects } from 'src/utils/objects';
+import { mergeObjects } from '../utils/objects';
 
 @Injectable()
 export class PollService {

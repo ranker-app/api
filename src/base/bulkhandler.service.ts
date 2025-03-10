@@ -1,4 +1,4 @@
-import { bulkMergeObjects, mergeObjects } from 'src/utils/objects';
+import { bulkMergeObjects, mergeObjects } from '../utils/objects';
 import { GenericIdentifiable } from './generic-identifiable.interface';
 
 export abstract class BulkHandlerService<

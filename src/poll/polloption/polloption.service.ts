@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreatePollOptionDto } from './dto/create-poll-option.dto';
 import { PollOptionEntity } from './polloption.entity';
-import { BulkHandlerService } from 'src/base/bulkhandler.service';
+import { BulkHandlerService } from '../../base/bulkhandler.service';
 
 @Injectable()
 export class PollOptionService extends BulkHandlerService<
